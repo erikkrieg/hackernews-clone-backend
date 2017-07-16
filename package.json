@@ -8,5 +8,12 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3",
+    "graphql": "^0.10.4",
+    "graphql-server-express": "^1.0.0",
+    "graphql-tools": "^1.1.0"
+  }
 }
