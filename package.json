@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./src/index.js",
-    "open": "open http://localhost:3000",
+    "open": "open http://localhost:3000/graphiql",
     "lint": "eslint src/"
   },
   "keywords": [],
