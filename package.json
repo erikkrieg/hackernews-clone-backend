@@ -15,5 +15,12 @@
     "graphql": "^0.10.4",
     "graphql-server-express": "^1.0.0",
     "graphql-tools": "^1.1.0"
+  },
+  "devDependencies": {
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-node": "^5.1.0",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^3.0.1"
   }
 }
