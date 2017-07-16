@@ -6,6 +6,10 @@ const typeDefs = `
         url: String!
         description: String!
     }
+
+    type Query {
+        allLinks: [Link!]!
+    }
 `
 
 module.exports = makeExecutableSchema(typeDefs)
