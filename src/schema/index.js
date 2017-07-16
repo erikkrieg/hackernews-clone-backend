@@ -1,4 +1,4 @@
-const { makeExecutableSchema } = require('graphql-tools');
+const { makeExecutableSchema } = require('graphql-tools')
 
 const typeDefs = `
     type Link {
@@ -6,6 +6,6 @@ const typeDefs = `
         url: String!
         description: String!
     }
-`;
+`
 
-module.exports = makeExecutableSchema(typeDefs);
+module.exports = makeExecutableSchema(typeDefs)
