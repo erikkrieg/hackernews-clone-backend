@@ -20,8 +20,8 @@ module.exports = {
             const response = await mongo.Users.insert(newUser)
             return Object.assign({ id: response.insertedIds[0] }, newUser)
         },
-        signinUser: async (root, { data: { email, password } }, { mongo }) => {
-            const user = mongo.Users.findOne({ email })
+        signinUser: async (root, { email: { email, password } }, { mongo }) => {
+            const user = await mongo.Users.findOne({ email })
             if (user && user.password === password) {
                 return { user, token: `token-${email}` }
             }
