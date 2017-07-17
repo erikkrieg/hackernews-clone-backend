@@ -9,5 +9,8 @@ module.exports = {
             const response = await mongo.Links.insert(data)
             return Object.assign({ id: response.insertedIds[0] }, data)
         }
+    },
+    Link: {
+        id: root => root._id || root.id
     }
 }
