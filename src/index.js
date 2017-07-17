@@ -21,7 +21,10 @@ async function start () {
     }
 
     app.use(endpointURL, bodyParser.json(), graphqlExpress(buildOptions))
-    app.use('/graphiql', graphiqlExpress({ endpointURL }))
+    app.use('/graphiql', graphiqlExpress({
+        endpointURL,
+        passHeader: `'Authorization': 'bearer token-foo@bar'`
+    }))
 
     app.listen(PORT, () => {
         console.log(`Hackernews GraphQL server running on port ${PORT}.`)

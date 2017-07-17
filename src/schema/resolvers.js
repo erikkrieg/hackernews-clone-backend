@@ -10,7 +10,7 @@ module.exports = {
         createLink: async (root, data, { mongo, user }) => {
             const newLink = Object.assign({ postedById: user && getId(user) }, data)
             const response = await mongo.Links.insert(newLink)
-            return Object.assign({ id: response.insertedIds[0] }, data)
+            return Object.assign({ id: response.insertedIds[0] }, newLink)
         },
         createUser: async (root, data, { mongo }) => {
             const newUser = {
