@@ -23,15 +23,20 @@ const typeDefs = `
         password: String!
     }
 
+    type SigninPayLoad {
+        token: String
+        user: User
+    }
+
     type Query {
         allLinks: [Link!]!
     }
 
     type Mutation {
         createLink(url: String!, description: String!): Link
-
         # using AuthProviderSignupData to emulate Graphcool
         createUser(name: String!, authProvider: AuthProviderSignupData!): User
+        signinUser(email: AUTH_PROVIDER_EMAIL): SigninPayLoad!
     }
 `
 
