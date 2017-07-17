@@ -8,6 +8,15 @@ module.exports = {
         createLink: async (root, data, { mongo }) => {
             const response = await mongo.Links.insert(data)
             return Object.assign({ id: response.insertedIds[0] }, data)
+        },
+        createUser: async (root, data, { mongo }) => {
+            const newUser = {
+                name: data.name,
+                email: data.authProvider.email.email,
+                password: data.authProvider.email.password
+            }
+            const response = await mongo.Users.insert(newUser)
+            return Object.assign({ id: response.insertedIds[0] }, newUser)
         }
     },
     Link: {
