@@ -1,3 +1,5 @@
+const getId = root => root._id || root.id
+
 module.exports = {
     Query: {
         allLinks: (root, data, { mongo }) => {
@@ -17,9 +19,18 @@ module.exports = {
             }
             const response = await mongo.Users.insert(newUser)
             return Object.assign({ id: response.insertedIds[0] }, newUser)
+        },
+        signinUser: async (root, { data: { email, password } }, { mongo }) => {
+            const user = mongo.Users.findOne({ email })
+            if (user && user.password === password) {
+                return { user, token: `token-${email}` }
+            }
         }
     },
     Link: {
-        id: root => root._id || root.id
+        id: getId
+    },
+    User: {
+        id: getId
     }
 }
