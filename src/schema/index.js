@@ -35,6 +35,7 @@ const typeDefs = `
 
     type Mutation {
         createLink(url: String!, description: String!): Link
+        createVote(linkId: ID!): Vote
         # using AuthProviderSignupData to emulate Graphcool
         createUser(name: String!, authProvider: AuthProviderSignupData!): User
         signinUser(email: AUTH_PROVIDER_EMAIL): SigninPayLoad!
