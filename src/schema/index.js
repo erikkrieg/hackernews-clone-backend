@@ -9,6 +9,12 @@ const typeDefs = `
         postedBy: User
     }
 
+    type Vote {
+        id: ID!
+        user: User!
+        link: Link!
+    }
+
     type User {
         id: ID!
         name: String!
