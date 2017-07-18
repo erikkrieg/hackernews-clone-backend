@@ -42,7 +42,8 @@ module.exports = {
         id: getId,
         postedBy: ({ postedById }, data, { mongo }) => {
             return mongo.Users.findOne({ _id: postedById })
-        }
+        },
+        votes: ({ _id }, data, { mongo }) => mongo.Votes.find({ linkId: _id }).toArray()
     },
     User: {
         id: getId
