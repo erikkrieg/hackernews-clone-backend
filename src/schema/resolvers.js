@@ -1,3 +1,5 @@
+const { ObjectID } = require('mongodb')
+
 const getId = root => root._id || root.id
 
 module.exports = {
@@ -11,6 +13,14 @@ module.exports = {
             const newLink = Object.assign({ postedById: user && getId(user) }, data)
             const response = await mongo.Links.insert(newLink)
             return Object.assign({ id: response.insertedIds[0] }, newLink)
+        },
+        createVote: async (root, { linkId }, { mongo, user }) => {
+            const newVote = {
+                userId: user && getId(user),
+                linkId: new ObjectID(linkId)
+            }
+            const response = await mongo.Votes.insert(newVote)
+            return Object.assign({ id: response.insertedIds[0] }, newVote)
         },
         createUser: async (root, data, { mongo }) => {
             const newUser = {
