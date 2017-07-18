@@ -20,6 +20,7 @@ const typeDefs = `
         id: ID!
         name: String!
         email: String
+        votes: [Vote]!
     }
 
     input AuthProviderSignupData {

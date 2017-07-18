@@ -46,7 +46,8 @@ module.exports = {
         votes: ({ _id }, data, { mongo }) => mongo.Votes.find({ linkId: _id }).toArray()
     },
     User: {
-        id: getId
+        id: getId,
+        votes: ({ _id }, data, { mongo }) => mongo.Votes.find({ userId: _id }).toArray()
     },
     Vote: {
         id: getId,
