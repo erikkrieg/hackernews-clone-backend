@@ -46,5 +46,10 @@ module.exports = {
     },
     User: {
         id: getId
+    },
+    Vote: {
+        id: getId,
+        user: ({ userId }, data, { mongo }) => mongo.Users.findOne({ _id: userId }),
+        link: ({ linkId }, data, { mongo }) => mongo.Links.findOne({ _id: linkId })
     }
 }
