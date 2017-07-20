@@ -1,14 +1,15 @@
 const DataLoader = require('dataloader')
 
-function batchUsers (Users, keys) {
-    return Users.find({ _id: { $in: keys } }).toArray()
+const defaultLoaderConfig = {
+    cacheKeyFn: key => key.toString()
 }
 
-module.exports = ({ Users }) => ({
-    userLoader: new DataLoader(
-        keys => batchUsers(Users, keys),
-        {
-            cacheKeyFn: key => key.toString()
-        }
-    )
+function batch (Collection, keys) {
+    return Collection.find({ _id: { $in: keys } }).toArray()
+}
+
+module.exports = ({ Users, Links, Votes }) => ({
+    userLoader: new DataLoader(keys => batch(Users, keys), defaultLoaderConfig),
+    linkLoader: new DataLoader(keys => batch(Links, keys), defaultLoaderConfig),
+    voteLoader: new DataLoader(keys => batch(Votes, keys), defaultLoaderConfig)
 })
