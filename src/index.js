@@ -5,6 +5,7 @@ const { graphqlExpress, graphiqlExpress } = require('graphql-server-express')
 const schema = require('./schema')
 const connectMongo = require('./mongo-connector')
 const { authenticate } = require('./authentication')
+const buildDataloaders = require('./dataloaders')
 
 const PORT = 3000
 const endpointURL = '/graphql'
@@ -16,7 +17,11 @@ async function start () {
         const user = await authenticate(req, mongo.Users)
         return {
             schema,
-            context: { mongo, user }
+            context: {
+                mongo,
+                user,
+                dataloaders: buildDataloaders(mongo)
+            }
         }
     }
 
