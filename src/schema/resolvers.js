@@ -6,6 +6,9 @@ module.exports = {
     Query: {
         allLinks: (root, data, { mongo }) => {
             return mongo.Links.find({}).toArray()
+        },
+        allVotes: (root, data, { mongo }) => {
+            return mongo.Votes.find({}).toArray()
         }
     },
     Mutation: {
@@ -44,15 +47,18 @@ module.exports = {
         postedBy: ({ postedById }, data, { dataloaders }) => dataloaders.userLoader.load(postedById),
         // example NOT using dataloaders
         // postedBy: ({ postedById }, data, { dataloaders, mongo }) => mongo.Users.findOne({ _id: postedById }),
-        votes: ({ _id }, data, { dataloaders }) => dataloaders.voteLoader.load(_id)
+        votes: ({ _id }, data, { mongo }) => mongo.Votes.find({ linkId: _id }).toArray()
+        // votes: ({ _id }, data, { dataloaders }) => dataloaders.votesByLinkLoader.load(_id)
     },
     User: {
         id: getId,
-        votes: ({ _id }, data, { dataloaders }) => dataloaders.voteLoader.load(_id)
+        votes: ({ _id }, data, { mongo }) => mongo.Votes.find({ userId: _id }).toArray()
+        // votes: ({ _id }, data, { dataloaders }) => dataloaders.votesByUserLoader.load(_id)
     },
     Vote: {
         id: getId,
         user: ({ userId }, data, { dataloaders }) => dataloaders.userLoader.load(userId),
-        link: ({ linkId }, data, { dataloaders }) => dataloaders.linkLoader.load(linkId)
+        link: ({ linkId }, data, { mongo }) => mongo.Links.find({ _id: linkId }).toArray()
+        // link: ({ linkId }, data, { dataloaders }) => dataloaders.linkLoader.load(linkId)
     }
 }
