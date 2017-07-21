@@ -1,6 +1,22 @@
 const { ObjectID } = require('mongodb')
+const { URL } = require('url')
 
+const assertValidLink = url => {
+    try {
+        // eslint-disable-next-line
+        new URL(url)
+    } catch (error) {
+        throw new ValidationError('Link validation error; invalid url.', 'url')
+    }
+}
 const getId = root => root._id || root.id
+
+class ValidationError extends Error {
+    constructor (message, field) {
+        super(message)
+        this.field = field
+    }
+}
 
 module.exports = {
     Query: {
@@ -13,6 +29,7 @@ module.exports = {
     },
     Mutation: {
         createLink: async (root, data, { mongo, user }) => {
+            assertValidLink(data.url)
             const newLink = Object.assign({ postedById: user && getId(user) }, data)
             const response = await mongo.Links.insert(newLink)
             return Object.assign({ id: response.insertedIds[0] }, newLink)

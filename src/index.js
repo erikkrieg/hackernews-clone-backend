@@ -1,6 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const { graphqlExpress, graphiqlExpress } = require('graphql-server-express')
+const formatError = require('./formatError')
 
 const schema = require('./schema')
 const connectMongo = require('./mongo-connector')
@@ -17,6 +18,7 @@ async function start () {
         const user = await authenticate(req, mongo.Users)
         return {
             schema,
+            formatError,
             context: {
                 mongo,
                 user,
