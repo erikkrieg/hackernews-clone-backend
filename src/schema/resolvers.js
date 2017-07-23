@@ -39,9 +39,12 @@ class ValidationError extends Error {
 
 module.exports = {
     Query: {
-        allLinks: (root, { filter }, { mongo }) => {
+        allLinks: (root, { filter, skip, first }, { mongo }) => {
             const query = filter ? { $or: buildFilters(filter) } : {}
-            return mongo.Links.find(query).toArray()
+            const cursor = mongo.Links.find(query)
+            if (first) cursor.limit(first)
+            if (skip) cursor.skip(skip)
+            return cursor.toArray()
         },
         allVotes: (root, data, { mongo }) => {
             return mongo.Votes.find({}).toArray()
