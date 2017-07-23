@@ -11,6 +11,24 @@ const assertValidLink = url => {
     }
 }
 const getId = root => root._id || root.id
+const buildRegex = val => ({ $regex: `.*${val}.*` })
+
+/* eslint-disable camelcase, no-empty-pattern */
+const buildFilters = ({ OR = [], description_contains, url_contains }) => {
+    const filter = (description_contains || url_contains) ? {} : null
+    if (description_contains) {
+        filter.description = buildRegex(description_contains)
+    }
+    if (url_contains) {
+        filter.url = buildRegex(url_contains)
+    }
+    let filters = filter ? [filter] : []
+    for (let i = 0; i < OR.length; i++) {
+        filters = filters.concat(buildFilters(OR[i]))
+    }
+    return filters
+}
+/* eslint-enable camelcase, no-empty-pattern */
 
 class ValidationError extends Error {
     constructor (message, field) {
@@ -21,8 +39,9 @@ class ValidationError extends Error {
 
 module.exports = {
     Query: {
-        allLinks: (root, data, { mongo }) => {
-            return mongo.Links.find({}).toArray()
+        allLinks: (root, { filter }, { mongo }) => {
+            const query = filter ? { $or: buildFilters(filter) } : {}
+            return mongo.Links.find(query).toArray()
         },
         allVotes: (root, data, { mongo }) => {
             return mongo.Votes.find({}).toArray()
