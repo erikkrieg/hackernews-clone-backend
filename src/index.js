@@ -5,6 +5,7 @@ const formatError = require('./formatError')
 const { execute, subscribe } = require('graphql')
 const { createServer } = require('http')
 const { SubscriptionServer } = require('subscriptions-transport-ws')
+const cors = require('cors')
 
 const schema = require('./schema')
 const connectMongo = require('./mongo-connector')
@@ -30,7 +31,7 @@ async function start () {
         }
     }
 
-    app.use(endpointURL, bodyParser.json(), graphqlExpress(buildOptions))
+    app.use(endpointURL, cors(), bodyParser.json(), graphqlExpress(buildOptions))
     app.use('/graphiql', graphiqlExpress({
         endpointURL,
         passHeader: `'Authorization': 'bearer token-foo@bar'`,
