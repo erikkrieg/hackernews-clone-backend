@@ -38,7 +38,7 @@ const typeDefs = `
     }
 
     type Query {
-        allLinks(filter: LinkFilter): [Link!]!,
+        allLinks(filter: LinkFilter, skip: Int, first: Int): [Link!]!,
         allVotes: [Vote]!
     }
 
