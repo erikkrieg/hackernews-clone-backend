@@ -49,6 +49,25 @@ const typeDefs = `
         createUser(name: String!, authProvider: AuthProviderSignupData!): User
         signinUser(email: AUTH_PROVIDER_EMAIL): SigninPayLoad!
     }
+
+    type Subscription {
+        Link(filter: LinkSubscriptionFilter): LinkSubscriptionPayload
+    }
+
+    input LinkSubscriptionFilter {
+        mutation_in: [_ModelMutationType!]
+    }
+
+    type LinkSubscriptionPayload {
+        mutation: _ModelMutationType!
+        node: Link
+    }
+
+    enum _ModelMutationType {
+        CREATED
+        UPDATED
+        DELETED
+    }
 `
 
 module.exports = makeExecutableSchema({ typeDefs, resolvers })
