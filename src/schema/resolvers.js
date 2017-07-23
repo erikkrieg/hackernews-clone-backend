@@ -1,5 +1,6 @@
 const { ObjectID } = require('mongodb')
 const { URL } = require('url')
+const pubsub = require('../pubsub')
 
 const assertValidLink = url => {
     try {
@@ -32,6 +33,8 @@ module.exports = {
             assertValidLink(data.url)
             const newLink = Object.assign({ postedById: user && getId(user) }, data)
             const response = await mongo.Links.insert(newLink)
+            newLink.id = response.insertedIds[0]
+            pubsub.publish('Link', { Link: { mutation: 'CREATED', node: newLink } })
             return Object.assign({ id: response.insertedIds[0] }, newLink)
         },
         createVote: async (root, { linkId }, { mongo, user }) => {
@@ -56,6 +59,11 @@ module.exports = {
             if (user && user.password === password) {
                 return { user, token: `token-${email}` }
             }
+        }
+    },
+    Subscription: {
+        Link: {
+            subscribe: () => pubsub.asyncIterator('Link')
         }
     },
     Link: {
