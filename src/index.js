@@ -2,6 +2,9 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const { graphqlExpress, graphiqlExpress } = require('graphql-server-express')
 const formatError = require('./formatError')
+const { execute, subscribe } = require('graphql')
+const { createServer } = require('http')
+const { SubscriptionServer } = require('subscriptions-transport-ws')
 
 const schema = require('./schema')
 const connectMongo = require('./mongo-connector')
@@ -30,10 +33,17 @@ async function start () {
     app.use(endpointURL, bodyParser.json(), graphqlExpress(buildOptions))
     app.use('/graphiql', graphiqlExpress({
         endpointURL,
-        passHeader: `'Authorization': 'bearer token-foo@bar'`
+        passHeader: `'Authorization': 'bearer token-foo@bar'`,
+        subscriptionsEndpoint: `ws://localhost:${PORT}/subscriptions`
     }))
 
-    app.listen(PORT, () => {
+    const server = createServer(app)
+    server.listen(PORT, () => {
+        // eslint-disable-next-line
+        new SubscriptionServer(
+            { execute, subscribe, schema },
+            { server, path: '/subscriptions' }
+        )
         console.log(`Hackernews GraphQL server running on port ${PORT}.`)
     })
 }
